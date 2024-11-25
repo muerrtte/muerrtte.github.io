@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест з алгебри</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            background-image: url('https://wallpapers.com/images/hd/mathematics-background-zwq7mm3o4j8bzk6i.jpg');
+            background-size: cover; /* Растягивает изображение на весь экран */
+            background-position: center; /* Центрирует изображение */
+            height: 100vh; /* Задает высоту фона на всю высоту окна браузера */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .question h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .answers label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .button-group button:hover {
+            background-color: #34495e;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #2980b9;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
+
+        .question-container {
+            margin-bottom: 20px;
+        }
+
+        .scale {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .score {
+            margin-top: 20px;
+            font-size: 1.3em;
+        }
+
+        .back-btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тест з алгебри</h1>
+
+        <form id="algebraTest" onsubmit="return calculateAlgebraScore(event)">
+            <!-- Вопросы -->
+            <div class="question-container">
+                <div class="question">
+                    <h3>1. Обчисліть значення виразу 2x + 5, якщо x = 3.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q1" value="11"> 11</label>
+                        <label><input type="radio" name="q1" value="10"> 10</label>
+                        <label><input type="radio" name="q1" value="15"> 15</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>2. Знайдіть корінь рівняння: x + 7 = 12.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q2" value="5"> 5</label>
+                        <label><input type="radio" name="q2" value="4"> 4</label>
+                        <label><input type="radio" name="q2" value="6"> 6</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>3. Спрощення виразу: 3a + 2a.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q3" value="5a"> 5a</label>
+                        <label><input type="radio" name="q3" value="6a"> 6a</label>
+                        <label><input type="radio" name="q3" value="a"> a</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>4. Який вираз еквівалентний: 4(x + 2)?</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q4" value="4x + 8"> 4x + 8</label>
+                        <label><input type="radio" name="q4" value="4x + 2"> 4x + 2</label>
+                        <label><input type="radio" name="q4" value="8x + 2"> 8x + 2</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>5. Розв'яжіть рівняння: 2x = 10.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q5" value="x = 5"> x = 5</label>
+                        <label><input type="radio" name="q5" value="x = 10"> x = 10</label>
+                        <label><input type="radio" name="q5" value="x = 2"> x = 2</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>6. Знайдіть значення виразу: 3x^2, якщо x = 2.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q6" value="12"> 12</label>
+                        <label><input type="radio" name="q6" value="6"> 6</label>
+                        <label><input type="radio" name="q6" value="18"> 18</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>7. Знайдіть суму коренів рівняння: (x - 3)(x + 2) = 0.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q7" value="-1"> -1</label>
+                        <label><input type="radio" name="q7" value="1"> 1</label>
+                        <label><input type="radio" name="q7" value="0"> 0</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>8. Спрощення виразу: 5x - 2x.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q8" value="3x"> 3x</label>
+                        <label><input type="radio" name="q8" value="7x"> 7x</label>
+                        <label><input type="radio" name="q8" value="x"> x</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>9. Яке з чисел є коренем рівняння: x^2 - 9 = 0?</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q9" value="3"> 3</label>
+                        <label><input type="radio" name="q9" value="4"> 4</label>
+                        <label><input type="radio" name="q9" value="5"> 5</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>10. Вираз (x + 1)^2 дорівнює:</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q10" value="x^2 + 2x + 1"> x^2 + 2x + 1</label>
+                        <label><input type="radio" name="q10" value="x^2 + 1"> x^2 + 1</label>
+                        <label><input type="radio" name="q10" value="x^2 + x"> x^2 + x</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>11. Обчисліть значення виразу 2x - 3, якщо x = 4.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q11" value="5"> 5</label>
+                        <label><input type="radio" name="q11" value="4"> 4</label>
+                        <label><input type="radio" name="q11" value="3"> 3</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question">
+                    <h3>12. Розв'яжіть рівняння: 3x = 9.</h3>
+                    <div class="answers">
+                        <label><input type="radio" name="q12" value="3"> 3</label>
+                        <label><input type="radio" name="q12" value="9"> 9</label>
+                        <label><input type="radio" name="q12" value="1"> 1</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">Надіслати</button>
+                <button onclick="window.location.href='index.html'">На головну</button>
+            </div>
+        </form>
+
+        <div class="result" id="result"></div>
+
+        
+           
+        </div>
+    </div>
+
+    <script>
+        function calculateAlgebraScore(event) {
+            event.preventDefault();
+
+            const correctAnswers = {
+                q1: "11",
+                q2: "5",
+                q3: "5a",
+                q4: "4x + 8",
+                q5: "x = 5",
+                q6: "12",
+                q7: "-1",
+                q8: "3x",
+                q9: "3",
+                q10: "x^2 + 2x + 1",
+                q11: "5",
+                q12: "3"
+            };
+
+            let score = 0;
+            let total = Object.keys(correctAnswers).length;
+
+            for (let question in correctAnswers) {
+                const answer = document.querySelector(`input[name="${question}"]:checked`);
+                if (answer && answer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+
+            const resultElement = document.getElementById("result");
+            resultElement.innerHTML = `
+                <p class="score">Ваш результат: ${score} із ${total}</p>
+                <p class="scale">${score >= 10 ? "Відмінно!" : score >= 6 ? "Добре" : "Спробуйте ще раз!"}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

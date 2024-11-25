@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предмети</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-image: url('https://wallpapers.com/images/high/mathematics-background-7ynkm8qqi5luua66.webp');
+            background-size: cover; /* Растягивает изображение на весь экран */
+            background-position: center; /* Центрирует изображение */
+            height: 100vh; /* Задает высоту фона на всю высоту окна браузера */
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            color: #2c3e50;
+        }
+        .accordion {
+            margin: 20px 0;
+        }
+        .accordion-item {
+            margin-bottom: 10px;
+            border: solid 1px #ddd;
+            border-radius: 5px;
+        }
+        .accordion-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            user-select: none;
+        }
+        .accordion-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-top: solid 1px #ddd;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #eaf2fa;
+            border: solid 1px #b0d4f1;
+            border-radius: 5px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .back-button, .clear-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #34495e;
+        }
+    </style>
+    <script>
+        // Очищення всіх полів вводу
+        function clearFields() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            const selects = document.querySelectorAll('select');
+            inputs.forEach(input => input.value = '');
+            selects.forEach(select => select.selectedIndex = 0);
+            document.querySelectorAll('.result').forEach(result => result.style.display = 'none');
+        }
+
+        function showResult(id, text) {
+            const resultDiv = document.getElementById(id);
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<strong>Результат:</strong><br>${text}`;
+        }
+
+        // Арифметика
+        function calculateArithmetic() {
+            const a = parseFloat(document.getElementById('arithmetic-a').value);
+            const b = parseFloat(document.getElementById('arithmetic-b').value);
+            const operation = document.getElementById('arithmetic-operation').value;
+            let result = '';
+            let steps = '';
+            if (!isNaN(a) && !isNaN(b)) {
+                if (operation === 'add') {
+                    result = a + b;
+                    steps = `Додавання: ${a} + ${b} = ${result}`;
+                } else if (operation === 'subtract') {
+                    result = a - b;
+                    steps = `Віднімання: ${a} - ${b} = ${result}`;
+                } else if (operation === 'multiply') {
+                    result = a * b;
+                    steps = `Множення: ${a} × ${b} = ${result}`;
+                } else if (operation === 'divide') {
+                    if (b !== 0) {
+                        result = a / b;
+                        steps = `Ділення: ${a} ÷ ${b} = ${result}`;
+                    } else {
+                        steps = 'Помилка: ділення на нуль неможливо.';
+                    }
+                }
+                showResult("arithmetic-result", steps);
+            } else {
+                alert('Будь ласка, введіть коректні числа.');
+            }
+        }
+
+        // Дроби
+        function calculateFractions() {
+            const numerator1 = parseFloat(document.getElementById('fraction-numerator1').value);
+            const denominator1 = parseFloat(document.getElementById('fraction-denominator1').value);
+            const numerator2 = parseFloat(document.getElementById('fraction-numerator2').value);
+            const denominator2 = parseFloat(document.getElementById('fraction-denominator2').value);
+            const operation = document.getElementById('fractions-operation').value;
+            if (denominator1 && denominator2) {
+                let resultNumerator = '';
+                let resultDenominator = denominator1 * denominator2;
+                let steps = '';
+                if (operation === 'add') {
+                    resultNumerator = (numerator1 * denominator2) + (numerator2 * denominator1);
+                    steps = `1. Спільний знаменник: ${denominator1} × ${denominator2} = ${resultDenominator}.<br>
+                             2. Приведення чисельників до спільного знаменника: (${numerator1} × ${denominator2}) + (${numerator2} × ${denominator1}).<br>
+                             3. Чисельник: ${resultNumerator}. Результат: ${resultNumerator}/${resultDenominator}.`;
+                } else if (operation === 'subtract') {
+                    resultNumerator = (numerator1 * denominator2) - (numerator2 * denominator1);
+                    steps = `1. Спільний знаменник: ${denominator1} × ${denominator2} = ${resultDenominator}.<br>
+                             2. Віднімання чисельників: (${numerator1} × ${denominator2}) - (${numerator2} × ${denominator1}).<br>
+                             3. Чисельник: ${resultNumerator}. Результат: ${resultNumerator}/${resultDenominator}.`;
+                } else if (operation === 'multiply') {
+                    resultNumerator = numerator1 * numerator2;
+                    resultDenominator = denominator1 * denominator2;
+                    steps = `1. Множення чисельників: ${numerator1} × ${numerator2} = ${resultNumerator}.<br>
+                             2. Множення знаменників: ${denominator1} × ${denominator2} = ${resultDenominator}.<br>
+                             3. Результат: ${resultNumerator}/${resultDenominator}.`;
+                } else if (operation === 'divide') {
+                    resultNumerator = numerator1 * denominator2;
+                    resultDenominator = denominator1 * numerator2;
+                    steps = `1. Ділення дробів виконується за формулою: (a/b) ÷ (c/d) = (a × d) / (b × c).<br>
+                             2. Чисельник: ${numerator1} × ${denominator2} = ${resultNumerator}.<br>
+                             3. Знаменник: ${denominator1} × ${numerator2} = ${resultDenominator}.<br>
+                             4. Результат: ${resultNumerator}/${resultDenominator}.`;
+                }
+                showResult("fractions-result", steps);
+            } else {
+                alert('Будь ласка, введіть коректні значення для дробів.');
+            }
+        }
+
+        // Алгебра
+        function solveLinearEquation() {
+            const a = parseFloat(document.getElementById('algebra-a').value);
+            const b = parseFloat(document.getElementById('algebra-b').value);
+            if (!isNaN(a) && !isNaN(b)) {
+                const result = -b / a;
+                const steps = `Рішення рівняння: ${a}x + ${b} = 0. Тому x = -${b} / ${a} = ${result}.`;
+                showResult("algebra-result", steps);
+            } else {
+                alert('Будь ласка, введіть коректні значення для a і b.');
+            }
+        }
+
+        function solveQuadraticEquation() {
+            const a = parseFloat(document.getElementById('algebra-a').value);
+            const b = parseFloat(document.getElementById('algebra-b').value);
+            const c = parseFloat(document.getElementById('algebra-c').value);
+            if (!isNaN(a) && !isNaN(b) && !isNaN(c) && a !== 0) {
+                const discriminant = b * b - 4 * a * c;
+                if (discriminant > 0) {
+                    const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                    const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                    const steps = `Рівняння: ${a}x² + ${b}x + ${c} = 0.<br>Дискримінант: D = b² - 4ac = ${discriminant}.<br>
+                                 Корені: x₁ = ${x1}, x₂ = ${x2}.`;
+                    showResult("algebra-result", steps);
+                } else if (discriminant === 0) {
+                    const x = -b / (2 * a);
+                    const steps = `Рівняння: ${a}x² + ${b}x + ${c} = 0.<br>Дискримінант: D = 0.<br>Корінь: x = ${x}.`;
+                    showResult("algebra-result", steps);
+                } else {
+                    const steps = `Рівняння: ${a}x² + ${b}x + ${c} = 0.<br>Дискримінант: D < 0. Корені не існують.`;
+                    showResult("algebra-result", steps);
+                }
+            } else {
+                alert('Будь ласка, введіть коректні значення для коефіцієнтів a, b і c.');
+            }
+        }
+
+        // Геометрія
+        function calculateRectangleArea() {
+            const length = parseFloat(document.getElementById('geometry-length').value);
+            const width = parseFloat(document.getElementById('geometry-width').value);
+            if (!isNaN(length) && !isNaN(width)) {
+                const area = length * width;
+                const steps = `Площа прямокутника: довжина × ширина = ${length} × ${width} = ${area}.`;
+                showResult("geometry-result", steps);
+            } else {
+                alert('Будь ласка, введіть коректні значення для довжини та ширини.');
+            }
+        }
+
+        // Додати більше функцій для геометрії
+        function calculateCircleArea() {
+            const radius = parseFloat(document.getElementById('geometry-radius').value);
+            if (!isNaN(radius)) {
+                const area = Math.PI * Math.pow(radius, 2);
+                const steps = `Площа кола: π × r² = π × ${radius}² = ${area.toFixed(2)}.`;
+                showResult("geometry-result", steps);
+            } else {
+                alert('Будь ласка, введіть коректне значення для радіусу.');
+            }
+        }
+
+        function calculateRectanglePerimeter() {
+            const length = parseFloat(document.getElementById('geometry-length').value);
+            const width = parseFloat(document.getElementById('geometry-width').value);
+            if (!isNaN(length) && !isNaN(width)) {
+                const perimeter = 2 * (length + width);
+                const steps = `Периметр прямокутника: 2 × (довжина + ширина) = 2 × (${length} + ${width}) = ${perimeter}.`;
+                showResult("geometry-result", steps);
+            } else {
+                alert('Будь ласка, введіть коректні значення для довжини та ширини.');
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Предмети</h1>
+    </header>
+
+    <div class="accordion">
+        <!-- Арифметика -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('arithmetic-content')">
+                Арифметика
+            </div>
+            <div id="arithmetic-content" class="accordion-content">
+                <div class="input-group">
+                    <label for="arithmetic-a">Число a:</label>
+                    <input type="number" id="arithmetic-a" />
+                </div>
+                <div class="input-group">
+                    <label for="arithmetic-b">Число b:</label>
+                    <input type="number" id="arithmetic-b" />
+                </div>
+                <div class="input-group">
+                    <label for="arithmetic-operation">Операція:</label>
+                    <select id="arithmetic-operation">
+                        <option value="add">Додавання</option>
+                        <option value="subtract">Віднімання</option>
+                        <option value="multiply">Множення</option>
+                        <option value="divide">Ділення</option>
+                    </select>
+                </div>
+                <button onclick="calculateArithmetic()">Обчислити</button>
+                <button onclick="window.location.href='testarif.html'">Тест</button>
+                <button onclick="window.location.href='teoryaarif.html'">Теорія</button>
+                <div id="arithmetic-result" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Дроби -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('fractions-content')">
+                Дроби
+            </div>
+            <div id="fractions-content" class="accordion-content">
+                <div class="input-group">
+                    <label for="fraction-numerator1">Чисельник дробу 1:</label>
+                    <input type="number" id="fraction-numerator1" />
+                </div>
+                <div class="input-group">
+                    <label for="fraction-denominator1">Знаменник дробу 1:</label>
+                    <input type="number" id="fraction-denominator1" />
+                </div>
+                <div class="input-group">
+                    <label for="fraction-numerator2">Чисельник дробу 2:</label>
+                    <input type="number" id="fraction-numerator2" />
+                </div>
+                <div class="input-group">
+                    <label for="fraction-denominator2">Знаменник дробу 2:</label>
+                    <input type="number" id="fraction-denominator2" />
+                </div>
+                <div class="input-group">
+                    <label for="fractions-operation">Операція:</label>
+                    <select id="fractions-operation">
+                        <option value="add">Додавання</option>
+                        <option value="subtract">Віднімання</option>
+                        <option value="multiply">Множення</option>
+                        <option value="divide">Ділення</option>
+                    </select>
+                </div>
+                <button onclick="calculateFractions()">Обчислити</button>
+                <button onclick="window.location.href='testdrob.html'">Тест</button>
+                <button onclick="window.location.href='teoryadrob.html'">Теорія</button>
+                <div id="fractions-result" class="result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Алгебра -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('algebra-content')">
+                Алгебра
+            </div>
+            <div id="algebra-content" class="accordion-content">
+                <div class="input-group">
+                    <label for="algebra-a">Число a (коефіцієнт x):</label>
+                    <input type="number" id="algebra-a" />
+                </div>
+                <div class="input-group">
+                    <label for="algebra-b">Число b (вільний член):</label>
+                    <input type="number" id="algebra-b" />
+                </div>
+                <button onclick="solveLinearEquation()">Обчислити лінійне рівняння</button>
+                <div class="input-group">
+                    <label for="algebra-c">Число c (вільний член квадратного рівняння):</label>
+                    <input type="number" id="algebra-c" />
+                </div>
+                <button onclick="solveQuadraticEquation()">Обчислити квадратне рівняння</button>
+                <div id="algebra-result" class="result" style="display:none;"></div>
+                <button onclick="window.location.href='testalgebra.html'">Тест</button>
+                <button onclick="window.location.href='teoryaalgebra.html'">Теорія</button>
+            </div>
+        </div>
+
+        <!-- Геометрія -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('geometry-content')">
+                Геометрія
+            </div>
+            <div id="geometry-content" class="accordion-content">
+                <div class="input-group">
+                    <label for="geometry-length">Довжина:</label>
+                    <input type="number" id="geometry-length" />
+                </div>
+                <div class="input-group">
+                    <label for="geometry-width">Ширина:</label>
+                    <input type="number" id="geometry-width" />
+                </div>
+                <button onclick="calculateRectangleArea()">Обчислити площу прямокутника</button>
+                <button onclick="calculateRectanglePerimeter()">Обчислити периметр прямокутника</button>
+                <div class="input-group">
+                    <label for="geometry-radius">Радіус:</label>
+                    <input type="number" id="geometry-radius" />
+                </div>
+                <button onclick="calculateCircleArea()">Обчислити площу кола</button>
+                <div id="geometry-result" class="result" style="display:none;"></div>
+                <button onclick="window.location.href='testgeo.html'">Тест</button>
+                <button onclick="window.location.href='teoryageo.html'">Теорія</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear-button">
+        <button onclick="clearFields()">Очистити всі поля</button>
+    </div>
+    <div class="back-button">
+        <button onclick="window.location.href = 'index.html';">Повернутися на перший сайт</button>
+    </div>
+</div>
+
+<script>
+    // Функція для відкриття та закриття акордеонів
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    }
+</script>
+</body>
+</html>
